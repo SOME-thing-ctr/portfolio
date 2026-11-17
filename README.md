@@ -185,6 +185,10 @@ tcb hosting deploy assets      assets   -e convinced-bonobo-d4e16yc0ceabb37
 > 注意：上传目录时第二个参数（云端前缀）必须写 `assets`，否则目录内容会散落到根路径。
 > 部署完成后全部资源返回 200（7 个视频，最大 68 MB）。
 
+> 限制：默认测试域名 `*.tcloudbaseapp.com` 首次访问会显示腾讯云「页面访问提示」，
+> 需等 10 秒后点「继续访问」；绑定已备案的自定义域名后该提示才会消失。
+> 因此对外分享（二维码、名片）优先用 GitHub Pages 地址，CloudBase 地址作为镜像备用。
+
 ## 生成访问二维码
 
 部署完成、拿到正式地址后执行：
