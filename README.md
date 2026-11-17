@@ -47,6 +47,7 @@ portfolio/
 | 工具 | qrcode[pil] | 生成容错等级 H 的二维码 |
 | 工具 | Playwright + 系统 Edge | 桌面 / 平板 / 移动端截图验收、播放行为测试 |
 | 工具 | imageio-ffmpeg（ffmpeg 9.0） | 视频首帧截取、HEVC / 大码率视频转码 |
+| 工具 | CloudBase CLI 3.9 | 腾讯云静态网站托管部署（登录、上传、环境管理） |
 | 工具 | GitHub REST API | 按 topic / stars 检索参考仓库 |
 
 ## 本地预览
@@ -165,6 +166,25 @@ jobs:
         uses: actions/deploy-pages@v4
 ```
 
+## 部署到腾讯云 CloudBase 静态网站托管（COS + CDN）
+
+当前站点同时部署在腾讯云 CloudBase 静态网站上：
+
+- 环境：`convinced-bonobo-d4e16yc0ceabb37`（ap-shanghai，体验版，有效期至 2027-05-17）
+- 访问地址：<https://convinced-bonobo-d4e16yc0ceabb37-1534696201.tcloudbaseapp.com/>
+- 部署命令：
+
+```bash
+npm i -g @cloudbase/cli
+tcb login        # 浏览器设备码授权，或 tcb login --apiKeyId <id> --apiKey <key>
+tcb hosting deploy index.html  ""       -e convinced-bonobo-d4e16yc0ceabb37
+tcb hosting deploy styles.css  ""       -e convinced-bonobo-d4e16yc0ceabb37
+tcb hosting deploy assets      assets   -e convinced-bonobo-d4e16yc0ceabb37
+```
+
+> 注意：上传目录时第二个参数（云端前缀）必须写 `assets`，否则目录内容会散落到根路径。
+> 部署完成后全部资源返回 200（7 个视频，最大 68 MB）。
+
 ## 生成访问二维码
 
 部署完成、拿到正式地址后执行：
@@ -174,7 +194,12 @@ python -m pip install "qrcode[pil]"
 python tools/make_qr.py "https://<你的用户名>.github.io/portfolio/"
 ```
 
-默认输出 `assets/images/qr.png`（深墨 / 米白配色，容错等级 H，适合印刷或投屏）。
+默认输出 `assets/images/qr.png`（深墨 / 米白配色，容错等级 H，适合印刷或投屏），
+可用 `--out` 指定输出文件名。当前仓库内：
+
+- `assets/images/qr.png` → GitHub Pages 地址
+- `assets/images/qr-cloudbase.png` → CloudBase 静态托管地址
+
 在手机相机中扫描即可访问。
 
 > 仓库内已附 `assets/images/qr-local.png`，内容为本次预览用的局域网地址
